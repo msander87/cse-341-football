@@ -1,17 +1,18 @@
 const express = require('express');
 const router = express.Router();
 
-const usersController = require('../controllers/players');
+const playerscontroller = require('../controllers/players');
+const validation = require('../middleware/validate');
 
-router.get('/', usersController.getAll);
+router.get('/', playerscontroller.getAll);
 
-router.get('/:id', usersController.getSingle);
+router.get('/:id', playerscontroller.getSingle);
 
-router.post('/', usersController.createDocument);
+router.post('/', validation.saveContact, playerscontroller.createDocument);
 
-router.put('/:id', usersController.updateDocument);
+router.put('/:id', validation.saveContact, playerscontroller.updateDocument);
 
-router.delete('/:id', usersController.deleteDocument);
+router.delete('/:id', playerscontroller.deleteDocument);
 
 
 

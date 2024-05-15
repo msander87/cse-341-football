@@ -1,4 +1,5 @@
 const mongodb = require("../data/database");
+const { param } = require("../routes");
 const ObjectId = require("mongodb").ObjectId;
 
 const getAll = async (req, res) => {
@@ -17,8 +18,14 @@ const getAll = async (req, res) => {
     });
 };
 
+
+
+
 const getSingle = (req, res) => {
   //#swagger.tags=['Players']
+  if(!ObjectId.isValid(req.params.id)){
+    res.status(400).json('Must use a valid player id');
+  }
   const documentId = new ObjectId(req.params.id);
   mongodb
     .getDatabase()
@@ -33,6 +40,9 @@ const getSingle = (req, res) => {
       res.status(200).json(result[0]);
     });
 };
+
+
+
 
 const createDocument = async (req, res) => {
   //#swagger.tags=['Players']
@@ -62,6 +72,9 @@ const createDocument = async (req, res) => {
 
 const updateDocument = async (req, res) => {
   //#swagger.tags=['Players']
+  if(!ObjectId.isValid(req.params.id)){
+    res.status(400).json('Must use a valid player id');
+  }
   const documentId = new ObjectId(req.params.id);
   const document = {
     firstName: req.body.firstName,
@@ -89,6 +102,9 @@ const updateDocument = async (req, res) => {
 
 const deleteDocument = async (req, res) => {
   //#swagger.tags=['Players']
+  if(!ObjectId.isValid(req.params.id)){
+    res.status(400).json('Must use a valid player id');
+  }
   const documentId = new ObjectId(req.params.id);
   const response = await mongodb
     .getDatabase()
