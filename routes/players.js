@@ -8,9 +8,9 @@ router.get('/', playerscontroller.getAll);
 
 router.get('/:id', playerscontroller.getSingle);
 
-router.post('/', validation.saveContact, playerscontroller.createDocument);
+router.post('/', validation.savePlayer, playerscontroller.createDocument);
 
-router.put('/:id', validation.saveContact, playerscontroller.updateDocument);
+router.put('/:id', validation.savePlayer, playerscontroller.updateDocument);
 
 router.delete('/:id', playerscontroller.deleteDocument);
 

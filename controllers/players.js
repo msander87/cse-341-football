@@ -1,44 +1,44 @@
 const mongodb = require("../data/database");
-const { param } = require("../routes");
+//const { param } = require("../routes");
 const ObjectId = require("mongodb").ObjectId;
 
 const getAll = async (req, res) => {
-  //#swagger.tags=['Players']
-  mongodb
-    .getDatabase()
-    .db()
-    .collection("player")
-    .find()
-    .toArray((err, players) => {
-      if (err) {
-        res.status(400).json({ message: err });
-      }
-      res.setHeader("Content-Type", "application/json");
-      res.status(200).json(players);
+  //#swagger.tags=['Contacts']
+  try {
+    const result = await mongodb.getDatabase().db().collection('player').find();
+    result.toArray().then((users) => {
+      res.setHeader('Content-Type', 'application/json');
+      res.status(200).json(users);
     });
+  } catch (error) {
+    return res.status(400).send({
+      success: false,
+      message: error.message
+    })
+  }
+
 };
 
 
 
-
-const getSingle = (req, res) => {
+const getSingle = async (req, res) => {
   //#swagger.tags=['Players']
-  if(!ObjectId.isValid(req.params.id)){
+  if (!ObjectId.isValid(req.params.id)) {
     res.status(400).json('Must use a valid player id');
   }
   const documentId = new ObjectId(req.params.id);
-  mongodb
-    .getDatabase()
-    .db()
-    .collection("player")
-    .find({ _id: documentId })
-    .toArray((err, result) => {
-      if (err) {
-        res.status(400).json({ message: err });
-      }
-      res.setHeader("Content-Type", "application/json");
-      res.status(200).json(result[0]);
+  try {
+    const result = await mongodb.getDatabase().db().collection('player').find({_id:documentId});
+    result.toArray().then((users) => {
+      res.setHeader('Content-Type', 'application/json');
+      res.status(200).json(users[0]);
     });
+  } catch (error) {
+    return res.status(400).send({
+      success: false,
+      message: error.message
+    })
+  }
 };
 
 
@@ -72,7 +72,7 @@ const createDocument = async (req, res) => {
 
 const updateDocument = async (req, res) => {
   //#swagger.tags=['Players']
-  if(!ObjectId.isValid(req.params.id)){
+  if (!ObjectId.isValid(req.params.id)) {
     res.status(400).json('Must use a valid player id');
   }
   const documentId = new ObjectId(req.params.id);
@@ -90,7 +90,9 @@ const updateDocument = async (req, res) => {
     .getDatabase()
     .db()
     .collection("player")
-    .replaceOne({ _id: documentId }, document);
+    .replaceOne({
+      _id: documentId
+    }, document);
   if (response.modifiedCount > 0) {
     res.status(204).send();
   } else {
@@ -102,7 +104,7 @@ const updateDocument = async (req, res) => {
 
 const deleteDocument = async (req, res) => {
   //#swagger.tags=['Players']
-  if(!ObjectId.isValid(req.params.id)){
+  if (!ObjectId.isValid(req.params.id)) {
     res.status(400).json('Must use a valid player id');
   }
   const documentId = new ObjectId(req.params.id);
@@ -110,7 +112,9 @@ const deleteDocument = async (req, res) => {
     .getDatabase()
     .db()
     .collection("player")
-    .deleteOne({ _id: documentId });
+    .deleteOne({
+      _id: documentId
+    });
   if (response.deletedCount > 0) {
     res.status(204).send();
   } else {

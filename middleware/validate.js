@@ -11,7 +11,7 @@ const savePlayer = (req, res, next) => {
         nationalTeam: 'required|string',
         club: 'required|string'
     };
-    validator(req.body, validaionRule, {}, (err, status) =>{
+    validator(req.body, validationRule, {}, (err, status) =>{
         if(!status){
             res.status(412).send({
                 success: false,
