@@ -3,9 +3,9 @@ const mongodb = require("../data/database");
 const ObjectId = require("mongodb").ObjectId;
 
 const getAll = async (req, res) => {
-  //#swagger.tags=['Players']
+  //#swagger.tags=['Clubs']
   try {
-    const result = await mongodb.getDatabase().db().collection('player').find();
+    const result = await mongodb.getDatabase().db().collection('club').find();
     result.toArray().then((users) => {
       res.setHeader('Content-Type', 'application/json');
       res.status(200).json(users);
@@ -22,13 +22,13 @@ const getAll = async (req, res) => {
 
 
 const getSingle = async (req, res) => {
-  //#swagger.tags=['Players']
+  //#swagger.tags=['Clubs']
   if (!ObjectId.isValid(req.params.id)) {
-    res.status(400).json('Must use a valid player id');
+    res.status(400).json('Must use a valid club id');
   }
   const documentId = new ObjectId(req.params.id);
   try {
-    const result = await mongodb.getDatabase().db().collection('player').find({_id:documentId});
+    const result = await mongodb.getDatabase().db().collection('club').find({_id:documentId});
     result.toArray().then((users) => {
       res.setHeader('Content-Type', 'application/json');
       res.status(200).json(users[0]);
@@ -45,51 +45,41 @@ const getSingle = async (req, res) => {
 
 
 const createDocument = async (req, res) => {
-  //#swagger.tags=['Players']
+  //#swagger.tags=['Clubs']
   const document = {
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    height: req.body.height,
-    weight: req.body.weight,
-    birthday: req.body.birthday,
-    goals: req.body.goals,
-    nationalTeam: req.body.nationalTeam,
-    club: req.body.club,
+    name: req.body.name,
+    creationYear: req.body.creationYear,
+    country: req.body.country,
   };
   const response = await mongodb
     .getDatabase()
     .db()
-    .collection("player")
+    .collection("club")
     .insertOne(document);
   if (response.acknowledged) {
     res.status(204).send();
   } else {
     res
       .status(500)
-      .json(response.error || "Some error ocurred while creating the player.");
+      .json(response.error || "Some error ocurred while creating the club.");
   }
 };
 
 const updateDocument = async (req, res) => {
-  //#swagger.tags=['Players']
+  //#swagger.tags=['Clubs']
   if (!ObjectId.isValid(req.params.id)) {
-    res.status(400).json('Must use a valid player id');
+    res.status(400).json('Must use a valid club id');
   }
   const documentId = new ObjectId(req.params.id);
   const document = {
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    height: req.body.height,
-    weight: req.body.weight,
-    birthday: req.body.birthday,
-    goals: req.body.goals,
-    nationalTeam: req.body.nationalTeam,
-    club: req.body.club,
+    name: req.body.name,
+    creationYear: req.body.creationYear,
+    country: req.body.country,
   };
   const response = await mongodb
     .getDatabase()
     .db()
-    .collection("player")
+    .collection("club")
     .replaceOne({
       _id: documentId
     }, document);
@@ -98,20 +88,20 @@ const updateDocument = async (req, res) => {
   } else {
     res
       .status(500)
-      .json(response.error || "Some error ocurred while modifying the player.");
+      .json(response.error || "Some error ocurred while modifying the club.");
   }
 };
 
 const deleteDocument = async (req, res) => {
-  //#swagger.tags=['Players']
+  //#swagger.tags=['Clubs']
   if (!ObjectId.isValid(req.params.id)) {
-    res.status(400).json('Must use a valid player id');
+    res.status(400).json('Must use a valid club id');
   }
   const documentId = new ObjectId(req.params.id);
   const response = await mongodb
     .getDatabase()
     .db()
-    .collection("player")
+    .collection("club")
     .deleteOne({
       _id: documentId
     });
@@ -120,7 +110,7 @@ const deleteDocument = async (req, res) => {
   } else {
     res
       .status(500)
-      .json(response.error || "Some error ocurred while deleting the player.");
+      .json(response.error || "Some error ocurred while deleting the club.");
   }
 };
 

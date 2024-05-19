@@ -1,12 +1,19 @@
 //Localhost
+
 ### Get home
 http://localhost:3000/
 
 ### Get all players
 http://localhost:3000/players/
 
+### Get all clubs
+http://localhost:3000/clubs/
+
 ### Get a single player
 http://localhost:3000/players/66451233507e940ffa3f5a4c
+
+### Get a single club
+http://localhost:3000/clubs/66451233507e940ffa3f5a4c
 
 ### Create a player
 POST http://localhost:3000/players/ HTTP/1.1
@@ -21,6 +28,16 @@ content-type: application/json
     "goals": "500",
     "nationalTeam": "Uruguay",
     "club": "Manchester United"
+}
+
+### Create a club
+POST http://localhost:3000/clubs/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Bayern Munchen",
+    "creationYear": "1900",
+    "country": "Germany"
 }
 
 

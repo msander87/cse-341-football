@@ -25,6 +25,27 @@ const savePlayer = (req, res, next) => {
    
 };
 
+const saveClub = (req, res, next) => {
+    const validationRule = {        
+        name: 'required|string',
+        creationYear: 'required|string',
+        country: 'required|string'        
+    };
+    validator(req.body, validationRule, {}, (err, status) =>{
+        if(!status){
+            res.status(412).send({
+                success: false,
+                message: 'Validation failed',
+                data: err
+            });
+        }else{
+            next();
+        }
+    });
+   
+};
+
 module.exports = {
-    savePlayer
+    savePlayer,
+    saveClub
 }
